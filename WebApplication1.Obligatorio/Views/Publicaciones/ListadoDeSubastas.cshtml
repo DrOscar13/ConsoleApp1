@@ -1,0 +1,57 @@
+﻿@model List<Subasta>
+@using LogicaNegocio
+<div>
+    @if (ViewBag.Message != null)
+    {
+        <p style="color:red;">@ViewBag.Message</p>
+    }
+</div>
+
+@{
+    ViewData["Title"] = "Listado de Subastas";
+}
+
+<h2>Listado de Subastas</h2>
+
+<table class="table table-hover table-dark">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Fecha de Publicación</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Mejor Oferta</th>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    Publicacion
+    <tbody>
+        @foreach (Subasta subasta in Model)
+        {
+            <tr>
+                <th scope="row">@subasta.Id</th>
+                <td>@subasta.Nombre</td>
+                <td>@subasta.FechaPublicacion.ToString("dd MMM yyyy")</td>
+                <td>@subasta.EstadoPublicacion</td>
+                <td>@subasta.ObtenerMejorOferta()</td> <!-- Muestra la mejor oferta actual -->
+                <td>
+                    @if (subasta.EstadoPublicacion == EstadoPublicacion.ABIERTA)
+                    {
+                        <form asp-action="CerrarSubasta" method="post">
+                            <input type="hidden" name="publicacionId" value="@subasta.Id" />
+                            <button type="submit" class="btn btn-danger">Cerrar Subasta</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span>Subasta Cerrada</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+

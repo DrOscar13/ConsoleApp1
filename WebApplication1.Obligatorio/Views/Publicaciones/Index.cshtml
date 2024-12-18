@@ -1,0 +1,54 @@
+﻿@using LogicaNegocio
+@model List<Publicacion>
+
+<div>
+    @if (ViewBag.Message != null)
+    {
+        <p style="color:red;">@ViewBag.Message</p>
+    }
+</div>
+
+
+<table class="table table-hover table-dark">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Costo</th>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Publicacion publicacion in Model)
+        {
+            <tr>
+                <th scope="row">@publicacion.Id</th>
+                <td>@publicacion.Nombre</td>
+                <td>@publicacion.EstadoPublicacion</td>
+                <td>@publicacion.CalcularCosto()</td>
+                <td>
+                    @if (publicacion is Venta && publicacion.EstadoPublicacion == EstadoPublicacion.ABIERTA)
+                    {
+                        <form asp-action="Comprar" method="post">
+                            <input type="hidden" name="publicacionId" value="@publicacion.Id" />
+                            <button type="submit" class="btn btn-primary">Comprar</button>
+                        </form>
+                    }
+                    else if (publicacion is Subasta && publicacion.EstadoPublicacion == EstadoPublicacion.ABIERTA)
+                    {
+                        <form asp-action="Ofertar" method="post">
+                            <input type="hidden" name="publicacionId" value="@publicacion.Id" />
+                            <input type="number" name="montoOferta" step="0.01" min="0" required placeholder="Tu oferta" />
+                            <button type="submit" class="btn btn-warning">Ofertar</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span>No disponible</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<h1>Bienvenido a la aplicacion</h1>
+
+@if (ViewBag.Rol == "Administrador")
+{
+    <p>Bienvenido, Administrador. Aquí tienes acceso a opciones administrativas.</p>
+    
+}
+else if (ViewBag.Rol == "Cliente")
+{
+    <p>Bienvenido, Cliente. Aquí puedes ver y comprar publicaciones.</p>
+
+}
